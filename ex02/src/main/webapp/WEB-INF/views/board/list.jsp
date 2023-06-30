@@ -53,12 +53,37 @@ request.setCharacterEncoding("utf-8");
 						</tr>
 					</c:forEach>
 				</table>
+				<form id="searchForm" action="/board/list" method="get">
+				<select name="type">
+				<option value=""
+				<c:out value="${pageMaker.cri.type==null?'selected':''}"/>
+				>검색옵션</option>
+				<option value="T"
+				<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>
+				>제목</option>
+				<option value="C"
+				<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
+				<option value="W"
+				<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
+				<option value="TC"
+				<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목or내용</option>
+				<option value="TW"
+				<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목or작성자</option>
+				<option value="TCW"
+				<c:out value="${pageMaker.cri.type eq 'TCW'?'selected':''}"/>>내용or내용or작성자</option>
+				</select>
+				<input type='text' name='keyword'
+				value="<c:out value='${pageMaker.cri.keyword}'/>" />
+				<input type='hidden' name='pageNum' value="<c:out value='${pageMaker.cri.pageNum}'/>" />
+				<input type='hidden' name='amount' value="<c:out value='${pageMaker.cri.amount}'/>" />
+				<button class="btn btn-default" >Search</button>
+				</form>
 				<h3>${pageMaker}</h3>
 				<div class='pull-right'>
 				<ul class='pagination'>
-				<c:if test="${pageMaker.prev}>">
+				<c:if test="${pageMaker.prev}">
 				<li class='paginate_button previous'>
-				<a href="${pageMaker.startPage-1}"> previous</a>
+				<a href="${pageMaker.startPage-1}"> prev</a>
 				</c:if>
 				<c:forEach begin='${pageMaker.startPage}' end="${pageMaker.endPage}" var='num'>
 					<li class='paginate_button ${pageMaker.cri.pageNum==num?"active":""}'><a href="${num}">${num}</a>
@@ -66,13 +91,15 @@ request.setCharacterEncoding("utf-8");
 				</c:forEach>
 				<c:if test="${pageMaker.next}">
 				<li class='paginate_button next'>
-				<a href="${pageMaker.startPage +1 }"> Next</a>
+				<a href="${pageMaker.endPage+1 }"> Next</a>
 				</c:if>
 				</ul>
 				</div>
 				<form action='/board/list' method='get' id='actionForm'>
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+				<input type='hidden' name='keyword' value='<c:out value="${pageMaker.cri.keyword}"/>' />
+				<input type='hidden' name='type' value='<c:out value="${pageMaker.cri.type}"/>' />
 				</form>
 				<!-- /.table-responsive -->
 				<!-- 새로입력 모달 시작 -->
@@ -157,6 +184,25 @@ $(document).ready(function(){
 		actionFrom.attr('action','/board/get');
 		actionFrom.submit();
 	})
+	
+	var searchForm=$("#searchForm");
+	
+	$("#searchForm button").on("click",(e)=>{
+		if(!searchForm.find("option:selected").val()){
+			alert("검색 종류를 선택하세요");
+			return false;
+		}
+		
+		if(!searchForm.find("option:keyword").val()){
+			alert("키워드를 입력해주세요");
+			return false;	
+		}
+		
+		searchForm.find("input[name='pageNum']").val("1");
+		e.pereventDefault();
+		
+		searchForm.submit();
+	});
 });
 </script>
 <!-- 모달 스크립트 펑션 끝 -->

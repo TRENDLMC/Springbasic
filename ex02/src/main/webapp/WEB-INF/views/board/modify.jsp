@@ -22,7 +22,10 @@ request.setCharacterEncoding("utf-8");
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 			<form role='form' action='/board/modify' method='post'>
-			<!-- role form문의 아이디를 지정해준것과 같은효과 -->
+				<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/> '>
+				<input type='hidden' name='amount' value='<c:out value="${cri.amount}"/> '>
+				<input type='hidden' name='keyword' value='<c:out value="${cri.keyword}"/>' />
+				<input type='hidden' name='type' value='<c:out value="${cri.type}"/>' />
 				<div class="form-group">
 					<label>Bno</label> <input class="form-control" name="bno"
 						value='<c:out value="${board.bno}" />' readonly="readonly">
@@ -91,8 +94,16 @@ $(document).ready(function(){
 		//	self.location="/board/list";
 	    //  return;
 	    formObj.attr("action","/board/list").attr("method",'get');
+	    var pageNum=$("input[name='pageNum']").clone();
+	    var amount=$("input[name='amount']").clone();
+	    var keyword=$("input[name='keyword']").clone();
+	    var type=$("input[name='type']").clone();
 	    //form의 액션과 메소드를 이걸로 변경시켜라
 	    formObj.empty();
+	    formObj.append(pageNum);
+	    formObj.append(amount);
+	    formObj.append(keyword);
+	    formObj.append(type);
 	    //form 문안에있는 내용을 다삭제하고 실행시켜라
 		}
 		//만약 modify가 들어오면 if문에서 걸리지않기떄문에 맨아래있는 submit가 실행된다 
