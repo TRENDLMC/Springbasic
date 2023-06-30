@@ -30,18 +30,18 @@ public class BoardControllerTests {
 	
 	@Before
 	public void setup() {
-		//before메서드는 junit을 실행하기전에 이걸 제일먼저 실행해라 라는의미
+		//before硫붿꽌�뱶�뒗 junit�쓣 �떎�뻾�븯湲곗쟾�뿉 �씠嫄� �젣�씪癒쇱� �떎�뻾�빐�씪 �씪�뒗�쓽誘�
 		this.mockMvc =MockMvcBuilders.webAppContextSetup(ctx).build();
-		//가상의 mvc 가상의 url과 파라미터를 만들어서 브라우저에서 사용하는것처럼 controller를 시험해볼수잇음
+		//媛��긽�쓽 mvc 媛��긽�쓽 url怨� �뙆�씪誘명꽣瑜� 留뚮뱾�뼱�꽌 釉뚮씪�슦���뿉�꽌 �궗�슜�븯�뒗寃껋쿂�읆 controller瑜� �떆�뿕�빐蹂쇱닔�엲�쓬
 	}
 	
 	@Test
 	public void testList()throws Exception{
 		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
-				//서버에서 get방식으로 저걸 불러와라
+				//�꽌踰꾩뿉�꽌 get諛⑹떇�쑝濡� ��嫄� 遺덈윭���씪
 				.andReturn()
 				.getModelAndView()
-				//리턴시킨 값을 모델 뷰로 가져옴 확인하기위해
+				//由ы꽩�떆�궓 媛믪쓣 紐⑤뜽 酉곕줈 媛��졇�샂 �솗�씤�븯湲곗쐞�빐
 				.getModelMap());
 				
 	}
@@ -50,10 +50,10 @@ public class BoardControllerTests {
 	public void testRegister()throws Exception {
 	
 		String resultPage=mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
-				.param("title","컨텍스트 새글 제목")
-				.param("content","컨텍스트글 새글내용")
+				.param("title","새로운 제목")
+				.param("content","새로운 내용")
 				.param("writer","user01")
-				//새글을 등록할떄 값을 넣어야하는것 을 param으로 넣음
+				//�깉湲��쓣 �벑濡앺븷�뻹 媛믪쓣 �꽔�뼱�빞�븯�뒗寃� �쓣 param�쑝濡� �꽔�쓬
 				).andReturn()
 				.getModelAndView()
 				.getViewName();
@@ -74,9 +74,9 @@ public class BoardControllerTests {
 	public void testModfiy()throws Exception{
 		String resultPage=mockMvc.perform(MockMvcRequestBuilders.post("/board/modify")
 				.param("bno", "1")
-				.param("title", "수정함")
-				.param("content", "수정내용")
-				.param("writer","수정사람"))
+				.param("title", "�닔�젙�븿")
+				.param("content", "�닔�젙�궡�슜")
+				.param("writer","�닔�젙�궗�엺"))
 				.andReturn()
 				.getModelAndView()
 				.getViewName();

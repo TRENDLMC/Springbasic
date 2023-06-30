@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
+import org.zerock.domain.PageDTO;
 import org.zerock.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -21,11 +23,12 @@ public class BoardController {
 	
 	
 	private BoardService service;
-	
+	//@RequestParam("page") int page
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(Criteria cri ,Model model) {
 		log.info("list");
-		model.addAttribute("list", service.getList());
+		model.addAttribute("list", service.getList(cri));
+		model.addAttribute("pageMaker",new PageDTO(cri, 123));
 	}
 
 	@PostMapping("/register")
@@ -33,16 +36,22 @@ public class BoardController {
 		//
 		log.info("register:"+board);
 		service.register(board);
-		//서비스의 레지스트에서 dao로 보낸후 db에 입력시킴
+		//�꽌鍮꾩뒪�쓽 �젅吏��뒪�듃�뿉�꽌 dao濡� 蹂대궦�썑 db�뿉 �엯�젰�떆�궡
 		rttr.addFlashAttribute("result", board.getBno());
 		return "redirect:/board/list";
 	}
+	@GetMapping("/register")
+	public void register() {
 	
-	@GetMapping("/get")
-	public void get(@RequestParam("bno") long bno,Model model) {
-		log.info("/get");
-		model.addAttribute("board",service.get(bno));
 	}
+	
+	@GetMapping({"/get","/modify"})
+	public void get(@RequestParam("bno") long bno,Model model) {
+		log.info("/get  modify");
+		model.addAttribute("board",service.get(bno));
+		
+	}
+	
 	
 	@PostMapping("/modify")
 	public String modify(BoardVO board,RedirectAttributes rttr) {
@@ -54,9 +63,11 @@ public class BoardController {
 		return "redirect:/board/list";
 		
 	}
+	//@GetMapping("/modify")
+	//public 
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") long bno ,RedirectAttributes rttr){
+	public String remove(@RequestParam("bno") long bno,RedirectAttributes rttr){
 		log.info("remove:"+bno);
 		if(service.remove(bno)) {
 			rttr.addFlashAttribute("result","success");

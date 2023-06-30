@@ -29,18 +29,18 @@ public class BoardServiceTests {
 	@Test
 	public void testReggister() {
 		BoardVO board=new BoardVO();
-		board.setTitle("새로작성하는글");
-		board.setContent("새로작성하는 내용");
+		board.setTitle("�깉濡쒖옉�꽦�븯�뒗湲�");
+		board.setContent("�깉濡쒖옉�꽦�븯�뒗 �궡�슜");
 		board.setWriter("newbie");
 		service.register(board);
 		
-		log.info("생성된 게시물의 번호"+board.getBno());
+		log.info("�깮�꽦�맂 寃뚯떆臾쇱쓽 踰덊샇"+board.getBno());
 		
 	}
 	
 	@Test
 	public void testGetList() {
-		service.getList().forEach(board->log.info(board));
+		//service.getList().forEach(board->log.info(board));
 	}
 	@Test
 	public void testGet() {
@@ -58,7 +58,7 @@ public class BoardServiceTests {
 		if(board==null) {
 			return;
 		}
-		board.setTitle("제목을 수정합니다123");
+		board.setTitle("�젣紐⑹쓣 �닔�젙�빀�땲�떎123");
 		log.info("modify result:"+service.modify(board));
 	}
 

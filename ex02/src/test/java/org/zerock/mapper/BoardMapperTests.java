@@ -1,12 +1,14 @@
 package org.zerock.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -26,8 +28,8 @@ public class BoardMapperTests {
 	@Test
 	public void testInsert() {
 		BoardVO board=new BoardVO();
-		board.setTitle("새로 작성하는 글");
-		board.setContent("새로 작성하는 내용");
+		board.setTitle("새 제목");
+		board.setContent("새 내용");
 		board.setWriter("newbie");
 		mapper.insert(board);
 		
@@ -37,8 +39,8 @@ public class BoardMapperTests {
 	@Test
 	public void testInsertSelectKey() {
 		BoardVO board=new BoardVO();
-		board.setTitle("새로작성하는 글 select key");
-		board.setContent("새로작성하는 내용 select key");
+		board.setTitle("�깉濡쒖옉�꽦�븯�뒗 湲� select key");
+		board.setContent("�깉濡쒖옉�꽦�븯�뒗 �궡�슜 select key");
 		board.setWriter("newbie");
 		
 		mapper.insertSelectKey(board);
@@ -61,12 +63,20 @@ public class BoardMapperTests {
 	public void testupdate() {
 		BoardVO board=new BoardVO();
 		board.setBno(5L);
-		board.setContent("수정한 내용");
-		board.setTitle("수정한 제목");
+		board.setContent("�닔�젙�븳 �궡�슜");
+		board.setTitle("�닔�젙�븳 �젣紐�");
 		board.setWriter("user00");
 		
 		int count=mapper.update(board);
 		log.info("update count:"+count);
+	}
+	
+	@Test
+	public void testPagin() {
+		Criteria cri=new Criteria();
+		cri.setPageNum(5);
+		List<BoardVO> list=mapper.getListWithPaging(cri);
+		list.forEach(board->log.info(board));
 	}
 	
 
